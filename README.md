@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShadCN Project Template
 
-## Getting Started
+This is a **ShadCN-based project template** bootstrapped with [Next.js](https://nextjs.org). It provides a modern and scalable starting point for building web applications with authentication, reusable components, and other developer-friendly features.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Authentication**:
+  - Login, Register and Forgot Password pages.
+  - Input validation using [Zod](https://github.com/colinhacks/zod) for type safety.
+
+- **Reusable Components**:
+  - Pre-built UI components inspired by [ShadCN](https://shadcn.dev/).
+
+- **State Management**:
+  - Lightweight and efficient state management using [Zustand](https://github.com/pmndrs/zustand).
+
+- **Custom Hooks**:
+  - Custom React hooks for reusable logic and functionality.
+
+- **Project Structure**:
+  - Highly modular structure for scalability and maintainability.
+
+- **Utility Functions**:
+  - General utility functions to simplify development tasks.
+
+- **Styling**:
+  - Global and component-specific styles managed via Tailwind CSS.
+
+- **TypeScript Support**:
+  - Strong type safety with TypeScript across the entire project.
+
+## Folder Structure
+
+```plaintext
+src/
+├── app/                     # Next.js app directory
+│   ├── auth/                # Authentication-related pages
+│   │   ├── login/
+│   │   ├── register/
+│   │   ├── forgot-password/
+│   │   │   ├── reset-password/
+│   │   │   ├── verify-code/
+│   │   │   └── verify-email/
+├── components/              # Reusable UI components
+│   ├── custom/              # Custom reusable components
+│   ├── ui/                  # ShadCN components
+│   ├── …(other files)       # ShadCN blocks files
+├── hooks/                   # Custom React hooks
+├── schemas/                 # Zod schemas for validation
+├── services/                # API calls and business logic
+├── store/                   # State management (Zustand)
+├── styles/                  # Global and component-specific styles
+├── utils/                   # Utility functions
+└── types/                   # TypeScript types and interfaces
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
