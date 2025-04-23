@@ -1,0 +1,57 @@
+{
+  "title": "Modèle Tremor",
+  "description": "Un modèlde de Next.js avec l'intégration de Tremor UI",
+  "homeButton": "Aller à la page de connexion",
+  
+  "login": {
+    "name": "Connexion",
+    "description": "Connectez-vous à votre compte",
+    "title": "Connectez-vous à votre compte",
+    "subText": "Vous n'avez pas de compte ?",
+    "button": "Se connecter",
+    "googleLogin": "Se connecter avec Google",
+    "agreeToTerms": "En vous connectant, vous acceptez nos"
+  },
+
+  "register": {
+    "name": "Inscription",
+    "description": "Créez un compte pour accéder à la plateforme",
+    "title": "Créez un compte",
+    "subText": "Vous avez déjà un compte ?",
+    "button": "S'inscrire",
+    "googleRegister": "S'inscrire avec Google",
+    "agreeToTerms": "En vous inscrivant, vous acceptez nos"
+  },
+
+  "fpd": {
+    "name": "Mot de passe oublié",
+    "verifyEmail": {
+      "title": "Mot de passe oublié",
+      "description": "Entrez votre email et nous vous enverrons un code de vérification.",
+      "button": "Envoyer le code de vérification"
+    },
+    "verifyCode": {
+      "title": "Vérifier le code",
+      "description": "Entrez le code que nous avons envoyé à votre email.",
+      "button": "Vérifier le code"
+    },
+    "resetPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "description": "Entrez votre nouveau mot de passe ci-dessous.",
+      "button": "Réinitialiser le mot de passe"
+    }
+  },
+
+  "authForm": {
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmez le mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "VerificationCode": "Code de vérification"
+  },
+
+  "or": "ou",
+  "termsOfService": "Conditions d'utilisation",
+  "privacyPolicy": "Politique de confidentialité"
+}
