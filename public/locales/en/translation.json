@@ -26,18 +26,38 @@
     "name": "Forgot Password",
     "verifyEmail": {
       "title": "Forgot Password",
-      "description": "Enter your email and we’ll send you a verification code.",
-      "button": "Send Verification Code"
+      "description": "Enter your email address to receive a verification code",
+      "button": "Send Verification Code",
+      "sending": "Sending...",
+      "sent": "Verification Code Sent",
+      "rememberPassword": "Remember your password?",
+      "helpText": "If you don't receive an email, check your spam folder or"
     },
     "verifyCode": {
-      "title": "Verify Code",
+      "title": "Enter Verification Code",
       "description": "Enter the code we sent to your email.",
-      "button": "Verify Code"
+      "button": "Verify Code",
+      "verifying": "Verifying...",
+      "resend": "Resend",
+      "noCode": "Didn't receive a code?",
+      "helpText": "The verification code will expire in 10 minutes"
     },
     "resetPassword": {
-      "title": "Reset Password",
-      "description": "Enter your new password below.",
-      "button": "Reset Password"
+      "title": "Reset Your Password",
+      "description": "Create a new password for your account",
+      "button": "Reset Password",
+      "success": "Password Reset Successfully",
+      "redirecting": "Redirecting to login page...",
+      "requirements": {
+        "name": "Password Requirements",
+        "req1": "At least 8 characters",
+        "req2": "At least one uppercase letter",
+        "req3": "At least one lowercase letter",
+        "req4": "At least one number",
+        "req5": "At least one special character"
+      },
+      "resetting": "Resetting...",
+      "helpText": "For security reasons, your password must meet all the requirements listed above."
     }
   },
 
@@ -45,6 +65,7 @@
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
+    "newPassword": "New Password",
     "firstName": "First Name",
     "lastName": "Last Name",
     "VerificationCode": "Verification Code"
@@ -52,5 +73,6 @@
 
   "or": "Or continue with",
   "termsOfService": "Terms of Service",
-  "privacyPolicy": "Privacy Policy"
+  "privacyPolicy": "Privacy Policy",
+  "contactSupport": "contact support"
 }

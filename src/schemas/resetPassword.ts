@@ -7,21 +7,20 @@ export const VerifyEmailSchema = z.object({
 });
 
 // Define a TypeScript type for the validated schema
-export type VerifyEmailForme = z.infer<typeof VerifyEmailSchema>;
+export type VerifyEmailForm = z.infer<typeof VerifyEmailSchema>;
 
 
 /* "Verification code" verification schema */
 // This schema validates a numeric code to ensure it is exactly 4 digits long.
 export const VerifyCodeSchema = z.object({
   code: z
-    .number()
-    .int() // Ensures the code is an integer
+    .string()
     .min(4, { message: "Code must be at least 4 digits" }) // Minimum value of 4
     .max(4, { message: "Code must be at most 4 digits" }), // Maximum value of 4
 });
 
 // Define a TypeScript type for the validated schema
-export type VerifyCodeForme = z.infer<typeof VerifyCodeSchema>;
+export type VerifyCodeForm = z.infer<typeof VerifyCodeSchema>;
 
 
 /* Reset password verification schema */

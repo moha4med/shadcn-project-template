@@ -5,9 +5,8 @@
   
   "login": {
     "name": "Connexion",
-    "description": "Connectez-vous à votre compte",
-    "title": "Connectez-vous à votre compte",
-    "subText": "Vous n'avez pas de compte ?",
+    "title": "Welcome back",
+    "subText": "Se connecter avec votre compte Google",
     "button": "Se connecter",
     "googleLogin": "Se connecter avec Google",
     "agreeToTerms": "En vous connectant, vous acceptez nos"
@@ -17,7 +16,7 @@
     "name": "Inscription",
     "description": "Créez un compte pour accéder à la plateforme",
     "title": "Créez un compte",
-    "subText": "Vous avez déjà un compte ?",
+    "subText": "Créez un compte avec votre compte Google",
     "button": "S'inscrire",
     "googleRegister": "S'inscrire avec Google",
     "agreeToTerms": "En vous inscrivant, vous acceptez nos"
@@ -28,17 +27,40 @@
     "verifyEmail": {
       "title": "Mot de passe oublié",
       "description": "Entrez votre email et nous vous enverrons un code de vérification.",
-      "button": "Envoyer le code de vérification"
+      "button": "Envoyer le code de vérification",
+
+      "sending": "Sending...",
+      "sent": "Code de Verification Envoyé",
+      "rememberPassword": "Remember your password?",
+      "helpText": "If you don't receive an email, check your spam folder or"
     },
     "verifyCode": {
       "title": "Vérifier le code",
       "description": "Entrez le code que nous avons envoyé à votre email.",
-      "button": "Vérifier le code"
+      "button": "Vérifier le code",
+
+      "verifying": "Verification...",
+      "resend": "Resend",
+      "noCode": "Didn't receive a code?",
+      "helpText": "Le code de verification va expirer en 10 minutes"
     },
     "resetPassword": {
       "title": "Réinitialiser le mot de passe",
       "description": "Entrez votre nouveau mot de passe ci-dessous.",
-      "button": "Réinitialiser le mot de passe"
+      "button": "Réinitialiser le mot de passe",
+
+      "success": "Mot de Passe Réinitialisé avec Succés",
+      "redirecting": "Redirection vers la page de connexion...",
+      "requirements": {
+        "name": "Password Requirements",
+        "req1": "Au moins 8 characters",
+        "req2": "Au moins une letter majuscule",
+        "req3": "Au moins une letter minuscule",
+        "req4": "Au moins un number",
+        "req5": "Au moins un character special"
+      },
+      "resetting": "Resetting...",
+      "helpText": "Pour des raisons de sécuriter, votre mot de passe doit meet tous les requirements listed above."
     }
   },
 
@@ -46,12 +68,14 @@
     "email": "Email",
     "password": "Mot de passe",
     "confirmPassword": "Confirmez le mot de passe",
+    "newPassword": "Nouveau mot de passe",
     "firstName": "Prénom",
     "lastName": "Nom",
     "VerificationCode": "Code de vérification"
   },
 
-  "or": "ou",
+  "or": "ou continue avec",
   "termsOfService": "Conditions d'utilisation",
-  "privacyPolicy": "Politique de confidentialité"
+  "privacyPolicy": "Politique de confidentialité",
+  "contactSupport": "contacter support"
 }

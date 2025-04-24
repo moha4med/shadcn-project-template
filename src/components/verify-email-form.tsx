@@ -1,34 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 /* Form Validation */
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { VerifyEmailSchema } from "@/schemas/resetPassword";
+import type { VerifyEmailForm } from "@/schemas/resetPassword";
+
+import { useUser } from "@/store/userStore";
+import { resetPassword } from "@/services/auth";
 
 /* Components */
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-
-// Email verification schema
-const VerifyEmailSchema = z.object({
-  email: z.string().email("Invalid email address"),
-})
-
-type VerifyEmailForm = z.infer<typeof VerifyEmailSchema>
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function VerifyEmailForm({ className, ...props }: React.ComponentProps<"div">) {
-  const { t } = useTranslation()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
+  const { t } = useTranslation();
+  const { setUser } = useUser();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     handleSubmit,
@@ -42,15 +41,16 @@ export function VerifyEmailForm({ className, ...props }: React.ComponentProps<"d
     setIsSubmitting(true)
 
     try {
-      // Here you would implement your email verification logic
-      console.log("Sending verification email to:", data.email)
+      const response = await resetPassword(data.email);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      if (response.status !== 200) {
+        throw new Error("Failed to send verification code");
+      }
 
       setIsSuccess(true)
-      // Redirect to verify code page
-      window.location.href = `/auth/verify-code?email=${encodeURIComponent(data.email)}`
+      setUser({ id: "", name: "", email: data.email });
+
+      window.location.href = "/auth/reset-password/verify-code";
     } catch (error) {
       console.error("Failed to send verification email:", error)
       setIsSuccess(false)
@@ -63,16 +63,16 @@ export function VerifyEmailForm({ className, ...props }: React.ComponentProps<"d
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">{t("verifyEmail.title", "Verify Your Email")}</CardTitle>
+          <CardTitle className="text-xl">{t("fpd.verifyEmail.title")}</CardTitle>
           <CardDescription>
-            {t("verifyEmail.subText", "Enter your email address to receive a verification code")}
+            {t("fpd.verifyEmail.description",)}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-6">
               <div className="grid gap-3">
-                <Label htmlFor="email">{t("authForm.email", "Email")}</Label>
+                <Label htmlFor="email">{t("authForm.email")}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -85,16 +85,16 @@ export function VerifyEmailForm({ className, ...props }: React.ComponentProps<"d
 
               <Button type="submit" className="w-full" disabled={isSubmitting || isSuccess}>
                 {isSubmitting
-                  ? t("verifyEmail.sending", "Sending...")
+                  ? t("fpd.verifyEmail.sending")
                   : isSuccess
-                    ? t("verifyEmail.sent", "Verification Code Sent")
-                    : t("verifyEmail.button", "Send Verification Code")}
+                    ? t("fpd.verifyEmail.sent")
+                    : t("fpd.verifyEmail.button")}
               </Button>
 
               <div className="text-center text-sm">
-                {t("verifyEmail.rememberPassword", "Remember your password?")}{" "}
+                {t("fpd.verifyEmail.rememberPassword")}{" "}
                 <Link href="/auth/login" className="underline underline-offset-4">
-                  {t("login.name", "Login")}
+                  {t("login.name")}
                 </Link>
               </div>
             </div>
@@ -102,9 +102,9 @@ export function VerifyEmailForm({ className, ...props }: React.ComponentProps<"d
         </CardContent>
       </Card>
       <div className="text-muted-foreground text-center text-xs text-balance">
-        {t("verifyEmail.helpText", "If you don't receive an email, check your spam folder or")}{" "}
+        {t("fpd.verifyEmail.helpText")}{" "}
         <Link href="/auth/login" className="underline underline-offset-4 hover:text-primary">
-          {t("verifyEmail.contactSupport", "contact support")}
+          {t("contactSupport")}
         </Link>
         .
       </div>

@@ -1,40 +1,37 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { useTranslation } from "react-i18next"
-import { useState, useRef, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useState, useRef, useEffect } from "react";
 
 /* Form Validation */
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { VerifyCodeSchema } from "@/schemas/resetPassword";
+import type { VerifyCodeForm } from "@/schemas/resetPassword";
+
+import { useUser } from "@/store/userStore";
+import { verifyCode } from "@/services/auth";
 
 /* Components */
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-// Verification code schema
-const VerifyCodeSchema = z.object({
-  code: z.string().length(6, "Verification code must be 6 digits"),
-})
-
-type VerifyCodeForm = z.infer<typeof VerifyCodeSchema>
 
 export function VerifyCodeForm({ className, ...props }: React.ComponentProps<"div">) {
-  const { t } = useTranslation()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const searchParams = useSearchParams()
-  const email = searchParams.get("email") || ""
+  const { t } = useTranslation();
+  const { user } = useUser();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Create refs for each digit input
   const inputRefs = useRef<Array<HTMLInputElement | null>>([null, null, null, null, null, null])
-  const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(""))
+  const [verificationCode, setVerificationCode] = useState<string[]>(Array(4).fill(""))
 
   const {
     handleSubmit,
@@ -59,7 +56,7 @@ export function VerifyCodeForm({ className, ...props }: React.ComponentProps<"di
     setVerificationCode(newCode)
 
     // Auto-focus next input if a digit was entered
-    if (value && index < 5) {
+    if (value && index < 3) {
       inputRefs.current[index + 1]?.focus()
     }
   }
@@ -75,14 +72,13 @@ export function VerifyCodeForm({ className, ...props }: React.ComponentProps<"di
     setIsSubmitting(true)
 
     try {
-      // Here you would implement your code verification logic
-      console.log("Verifying code:", data.code, "for email:", email)
+      const response = await verifyCode(user[0]?.email, data.code);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      if (response.status !== 200) {
+        throw new Error("Failed to verify code");
+      }
 
-      // Redirect to reset password page
-      window.location.href = `/auth/reset-password?email=${encodeURIComponent(email)}&code=${data.code}`
+      window.location.href = "/auth/forgot-password/reset-password";
     } catch (error) {
       console.error("Failed to verify code:", error)
     } finally {
@@ -94,9 +90,9 @@ export function VerifyCodeForm({ className, ...props }: React.ComponentProps<"di
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">{t("verifyCode.title", "Enter Verification Code")}</CardTitle>
+          <CardTitle className="text-xl">{t("fpd.verifyCode.title")}</CardTitle>
           <CardDescription>
-            {t("verifyCode.subText", "We've sent a 6-digit code to")} {email}
+            {t("fpd.verifyCode.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -104,7 +100,7 @@ export function VerifyCodeForm({ className, ...props }: React.ComponentProps<"di
             <div className="grid gap-6">
               <div>
                 <Label htmlFor="code" className="sr-only">
-                  {t("verifyCode.code", "Verification Code")}
+                  {t("authForm.VerificationCode")}
                 </Label>
                 <input type="hidden" {...register("code")} />
 
@@ -131,16 +127,16 @@ export function VerifyCodeForm({ className, ...props }: React.ComponentProps<"di
                 className="w-full"
                 disabled={isSubmitting || verificationCode.join("").length !== 6}
               >
-                {isSubmitting ? t("verifyCode.verifying", "Verifying...") : t("verifyCode.button", "Verify Code")}
+                {isSubmitting ? t("fpd.verifyCode.verifying") : t("fpd.verifyCode.button")}
               </Button>
 
               <div className="text-center text-sm">
-                {t("verifyCode.noCode", "Didn't receive a code?")}{" "}
+                {t("fpd.verifyCode.noCode")}{" "}
                 <Link
-                  href={`/auth/verify-email?email=${encodeURIComponent(email)}`}
+                  href="/auth/forgot-password/verify-email"
                   className="underline underline-offset-4"
                 >
-                  {t("verifyCode.resend", "Resend")}
+                  {t("fpd.verifyCode.resend")}
                 </Link>
               </div>
             </div>
@@ -148,7 +144,7 @@ export function VerifyCodeForm({ className, ...props }: React.ComponentProps<"di
         </CardContent>
       </Card>
       <div className="text-muted-foreground text-center text-xs text-balance">
-        {t("verifyCode.helpText", "The verification code will expire in 10 minutes")}
+        {t("fpd.verifyCode.helpText")}
       </div>
     </div>
   )

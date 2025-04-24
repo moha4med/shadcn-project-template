@@ -18,9 +18,12 @@ export const register = async (
 
     // Return the response data if the request is successful
     return response.data;
-  } catch (error: any) {
-    // Throw an error with a descriptive message if the request fails
-    throw new Error("Login failed: " + (error.response?.data?.message || error.message));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Register failed: " + error.message);
+    } else {
+      console.error("Register failed: " + error);
+    }
   }
 };
 
@@ -33,23 +36,29 @@ export const resetPassword = async (email: string) => {
 
     // Return the response data if the request is successful
     return response.data;
-  } catch (error: any) {
-    // Throw an error with a descriptive message if the request fails
-    throw new Error("Password reset failed: " + (error.response?.data?.message || error.message));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Login failed: " + error.message);
+    } else {
+      console.error("Login failed: " + error);
+    }
   }
 };
 
 // Function to verify the password reset code for a user
-export const verifyCode = async (email: string, code: number) => {
+export const verifyCode = async (email: string, code: string) => {
   try {
     // Send a POST request to the /api/verify-code endpoint with the user's email and code
     const response = await axiosInstance.post("/api/verify-code", { email, code });
 
     // Return the response data if the request is successful
     return response.data;
-  } catch (error: any) {
-    // Throw an error with a descriptive message if the request fails
-    throw new Error("Code verification failed: " + (error.response?.data?.message || error.message));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Code verification failed: " + error.message);
+    } else {
+      console.error("Code verification failed: " + error);
+    }
   }
 }
 
@@ -61,8 +70,11 @@ export const updatePassword = async (email: string, password: string) => {
 
     // Return the response data if the request is successful
     return response.data;
-  } catch (error: any) {
-    // Throw an error with a descriptive message if the request fails
-    throw new Error("Password update failed: " + (error.response?.data?.message || error.message));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Password update failed: " + error.message);
+    } else {
+      console.error("Password update failed: " + error);
+    }
   }
 }

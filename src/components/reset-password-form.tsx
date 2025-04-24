@@ -1,61 +1,35 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { cn } from "@/lib/utils"
-import { useTranslation } from "react-i18next"
-import { useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 /* Form Validation */
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ResetPasswordSchema } from "@/schemas/resetPassword";
+import type { ResetPasswordForm } from "@/schemas/resetPassword";
+
+import { useUser } from "@/store/userStore";
+import { updatePassword } from "@/services/auth";
 
 /* Components */
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { EyeIcon, EyeOffIcon } from "lucide-react"
-
-// Reset password schema
-const ResetPasswordSchema = z
-  .object({
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[0-9]/, {
-        message: "Password must contain at least one number",
-      })
-      .regex(/[!@#$%^&*()_\-+={[}\]|:;"'<,>.?]/, {
-        message: "Password must contain at least one special character",
-      }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
-  })
-
-type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export function ResetPasswordForm({ className, ...props }: React.ComponentProps<"div">) {
-  const { t } = useTranslation()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const { t } = useTranslation();
+  const { user } = useUser();
 
-  const searchParams = useSearchParams()
-  const email = searchParams.get("email") || ""
-  const code = searchParams.get("code") || ""
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     handleSubmit,
@@ -69,17 +43,17 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
     setIsSubmitting(true)
 
     try {
-      // Here you would implement your password reset logic
-      console.log("Resetting password for:", email, "with code:", code, "new password:", data.password)
+      const response = await updatePassword(user[0]?.email, data.password);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      setIsSuccess(true)
+      if (response.status !== 200) {
+        throw new Error("Failed to update password");
+      }
+      
+      setIsSuccess(true);
 
       // Redirect to login page after a delay
       setTimeout(() => {
-        window.location.href = "/auth/login"
+        window.location.href = "/auth/login";
       }, 2000)
     } catch (error) {
       console.error("Failed to reset password:", error)
@@ -93,8 +67,8 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">{t("resetPassword.title", "Reset Your Password")}</CardTitle>
-          <CardDescription>{t("resetPassword.subText", "Create a new password for your account")}</CardDescription>
+          <CardTitle className="text-xl">{t("fpd.resetPassword.title")}</CardTitle>
+          <CardDescription>{t("fpd.resetPassword.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           {isSuccess ? (
@@ -112,14 +86,14 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
                   </svg>
                 </div>
               </div>
-              <h3 className="text-lg font-medium">{t("resetPassword.success", "Password Reset Successfully")}</h3>
-              <p className="text-muted-foreground">{t("resetPassword.redirecting", "Redirecting to login page...")}</p>
+              <h3 className="text-lg font-medium">{t("fpd.resetPassword.success")}</h3>
+              <p className="text-muted-foreground">{t("fpd.resetPassword.redirecting")}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-6">
                 <div className="grid gap-3">
-                  <Label htmlFor="password">{t("authForm.newPassword", "New Password")}</Label>
+                  <Label htmlFor="password">{t("authForm.newPassword")}</Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -142,7 +116,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
                 </div>
 
                 <div className="grid gap-3">
-                  <Label htmlFor="confirmPassword">{t("authForm.confirmPassword", "Confirm Password")}</Label>
+                  <Label htmlFor="confirmPassword">{t("authForm.confirmPassword")}</Label>
                   <div className="relative">
                     <Input
                       id="confirmPassword"
@@ -166,21 +140,21 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
 
                 <div className="space-y-2">
                   <h4 className="text-sm font-medium text-muted-foreground">
-                    {t("resetPassword.requirements", "Password Requirements")}:
+                    {t("fpd.resetPassword.requirements")}:
                   </h4>
                   <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-5">
-                    <li>{t("resetPassword.req1", "At least 8 characters")}</li>
-                    <li>{t("resetPassword.req2", "At least one uppercase letter")}</li>
-                    <li>{t("resetPassword.req3", "At least one lowercase letter")}</li>
-                    <li>{t("resetPassword.req4", "At least one number")}</li>
-                    <li>{t("resetPassword.req5", "At least one special character")}</li>
+                    <li>{t("fpd.resetPassword.req1")}</li>
+                    <li>{t("fpd.resetPassword.req2")}</li>
+                    <li>{t("fpd.resetPassword.req3")}</li>
+                    <li>{t("fpd.resetPassword.req4")}</li>
+                    <li>{t("fpd.resetPassword.req5")}</li>
                   </ul>
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {isSubmitting
-                    ? t("resetPassword.resetting", "Resetting...")
-                    : t("resetPassword.button", "Reset Password")}
+                    ? t("fpd.resetPassword.resetting")
+                    : t("fpd.resetPassword.button")}
                 </Button>
               </div>
             </form>
@@ -188,10 +162,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
         </CardContent>
       </Card>
       <div className="text-muted-foreground text-center text-xs text-balance">
-        {t(
-          "resetPassword.helpText",
-          "For security reasons, your password must meet all the requirements listed above.",
-        )}
+        {t("resetPassword.helpText")}
       </div>
     </div>
   )

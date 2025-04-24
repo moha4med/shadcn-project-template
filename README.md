@@ -53,3 +53,60 @@ src/
 ├── utils/                   # Utility functions
 └── types/                   # TypeScript types and interfaces
 ```
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [Firebase Project](https://firebase.google.com/) for authentication setup.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/moha4med/shadcn-project-template.git
+   cd shadcn-project-template
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. Configure Firebase:
+   - Add your Firebase configuration in the `.env` file in the root directory:
+
+     ```
+     NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
+     NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+     NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+     NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+     ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Built With
+
+- [Next.js](https://nextjs.org) - React Framework
+- [Firebase Authentication](https://firebase.google.com) - Firebase services for user authentication.
+- [Zod](https://github.com/colinhacks/zod) - Input validation library.
+- [Zustand](https://github.com/pmndrs/zustand) - State management library.
+- [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS framework.
+- [TypeScript](https://www.typescriptlang.org) - Type-safe JavaScript.
